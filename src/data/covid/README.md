@@ -13,7 +13,7 @@ This folder provides all the real-world data for the COVID-19 experiments and th
 - We provide an exemplary synthetic datasets in /synthetic (already transformed)
 
 ## Data Sources
-The real-world data with the infection waves from the COVID-19 pandemic stems from Robert Koch-Institut (https://doi.org/10.5281/ZENODO.6994808)
+The real-world data with the infection waves from the COVID-19 pandemic stems from Robert Koch-Institut (https://doi.org/10.5281/zenodo.7042186)
 
 ## Data Preprocessing
 Details on pre-processing steps are described in the appendix of the paper.
