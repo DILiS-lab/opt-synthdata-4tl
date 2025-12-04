@@ -12,3 +12,5 @@ __pycache__
 *transformed_cases*
 *baseline.csv*
 *runs_baseline*
+
+logs/

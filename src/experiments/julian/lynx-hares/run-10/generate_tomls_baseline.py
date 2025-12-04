@@ -83,6 +83,9 @@ for seed in [10, 17, 42, 93, 97]:
             "synthetic": "/src/data/lynx-hares/real-world",
             "test_split": 0.79,
             "split_axis": "vertical",
+            "export_path": os.path.join(
+                f"./results/lynx-hares/DL/{seed}"
+            ),
             "time_series": {
                 "input_features": ["Hare", "Lynx"],
                 "output_features": ["Lynx"],

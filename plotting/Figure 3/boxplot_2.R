@@ -39,7 +39,7 @@ dl_results <- read_csv(paste0("mae_dataframe.csv")) |>
 (fig <- ggplot() +
     geom_hline(yintercept = 1, linewidth=1, color='#3E4989') + # This is for the DL baseline - normalized with itself -> 1
     geom_boxplot(data=dl_results, aes(x=EXP, y=MAE, fill=`Dataset size`, color=`Dataset size`), alpha=0.5, size=0.75) + # all results
-    annotate("label", x=0.72, y=1.07, label="DL baseline", color='#3E4989', label.size = NA, family="LM Roman 10", size=6) +
+    annotate("label", x=0.77, y=1.081, label="DL baseline", color='#3E4989', label.size = NA, family="LM Roman 10", size=7) +
     scale_color_manual(values=c('#4c1d4b', '#a11a5b', '#e83f3f', '#f69c73')) +
     scale_fill_manual(values=c('#4c1d4b', '#a11a5b', '#e83f3f', '#f69c73')) +
     ylab("Relative MAE") +
@@ -53,7 +53,7 @@ dl_results <- read_csv(paste0("mae_dataframe.csv")) |>
   
 
 
-ggsave("synthetic_datasets_size_boxplot_v11.pdf", fig, width=10, height=5.5, device=cairo_pdf)
+ggsave("synthetic_datasets_size_boxplot_v12.pdf", fig, width=10, height=5.5, device=cairo_pdf)
 
  
 

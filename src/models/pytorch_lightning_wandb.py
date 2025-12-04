@@ -1,10 +1,11 @@
 """Provides a model that predicts next timesteps from with a\
      pytorch lightning architecture."""
+
 import abc
 import dataclasses
 import time
 import shutil
-import os 
+import os
 
 import torch
 from torch import utils
@@ -40,9 +41,10 @@ if tuple(int(v) for v in pl.__version__.split(".")) < (  # type: ignore[attr-def
             for the PyTorchLightningModel."
     )
 
-torch.set_float32_matmul_precision('high')
+torch.set_float32_matmul_precision("high")
 
 wandb_project = os.environ["WANDB_PROJECT"] if "WANDB_PROJECT" in os.environ else None
+
 
 @dataclasses.dataclass
 class ArchitectureParams:
@@ -80,7 +82,7 @@ class PytorchLightningWandbModelConfig(model.ModelConfig):
     normalize: bool = True
     seed: int = 42
     finetuning: bool = False
-    
+
 
 class PytorchLightningWandbModel(model.Model):
     """Defines a Pytorch Lightning model to predict the next timestamps."""
@@ -109,29 +111,39 @@ class PytorchLightningWandbModel(model.Model):
         self.model = self.get_model(time_series_params, model_params)
         self.time_series_params = time_series_params
         self.model_params = model_params
-        self.training_checkpoint_directory = "src/models/training_checkpoints-" + self.model_params.name + "-" + str(time.time()).replace(".", "")
-        self.finetuning_checkpoint_directory = "src/models/finetuning_checkpoint-" + self.model_params.name + "-" + str(time.time()).replace(".", "")
+        self.training_checkpoint_directory = (
+            "src/models/training_checkpoints-"
+            + self.model_params.name
+            + "-"
+            + str(time.time()).replace(".", "")
+        )
+        self.finetuning_checkpoint_directory = (
+            "src/models/finetuning_checkpoint-"
+            + self.model_params.name
+            + "-"
+            + str(time.time()).replace(".", "")
+        )
         self.training_checkpoint_callback = ModelCheckpoint(
             dirpath=self.training_checkpoint_directory,
-            monitor='val/loss',
-            mode='min',
+            monitor="val/loss",
+            mode="min",
             save_top_k=1,
             verbose=False,
             every_n_epochs=1,
         )
         self.finetuning_checkpoint_callback = ModelCheckpoint(
             dirpath=self.finetuning_checkpoint_directory,
-            monitor='val/loss',
-            mode='min',
+            monitor="val/loss",
+            mode="min",
             save_top_k=1,
             verbose=False,
             every_n_epochs=1,
         )
         self.early_stopping_callback = pl.callbacks.EarlyStopping(
-            monitor='val/loss',
+            monitor="val/loss",
             patience=self.model_params.training_params.patience,
-            mode='min',
-            verbose=False
+            mode="min",
+            verbose=False,
         )
         self.start_time = time.time()
 
@@ -173,7 +185,7 @@ class PytorchLightningWandbModel(model.Model):
         train_loader: utils.data.DataLoader[
             torch.FloatTensor  # pylint: disable=no-member
         ] = utils.data.DataLoader(
-            train_data[:int(len(train_data) * 0.9)],  # type: ignore[arg-type]
+            train_data[: int(len(train_data) * 0.9)],  # type: ignore[arg-type]
             batch_size=self.model_params.training_params.batch_size,
             shuffle=False,
             num_workers=0,
@@ -181,7 +193,7 @@ class PytorchLightningWandbModel(model.Model):
         val_loader: utils.data.DataLoader[
             torch.FloatTensor  # pylint: disable=no-member
         ] = utils.data.DataLoader(
-            train_data[int(len(train_data) * 0.9):],  # type: ignore[arg-type]
+            train_data[int(len(train_data) * 0.9) :],  # type: ignore[arg-type]
             batch_size=self.model_params.training_params.batch_size,
             shuffle=False,
             num_workers=0,
@@ -202,33 +214,50 @@ class PytorchLightningWandbModel(model.Model):
         Args:
             train_loader: the data loader for the training data.
         """
-        wandb_logger = WandbLogger(
-            project='thesis-1',
-            entity='julianzabbarov',
-            name=self.name + ("-Finetuning" if self.model_params.finetuning else "")
-        ) if wandb_project else None
+        # TODO name needs to be changed/removed
+        wandb_logger = (
+            WandbLogger(
+                project="thesis-1",
+                entity="julianzabbarov",
+                name=self.name
+                + ("-Finetuning" if self.model_params.finetuning else ""),
+            )
+            if wandb_project
+            else None
+        )
         if self.model_params.finetuning:
             check_finetuning_params(self.model_params)
-            print(f"Loading trained model from {self.training_checkpoint_callback.best_model_path}...")
+            print(
+                f"Loading trained model from {self.training_checkpoint_callback.best_model_path}..."
+            )
             ckpt = torch.load(self.training_checkpoint_callback.best_model_path)
             trainer = pl.Trainer(
                 callbacks=[self.finetuning_checkpoint_callback],
-                max_epochs=self.model_params.training_params.finetuning_epochs + ckpt['epoch'],
+                max_epochs=self.model_params.training_params.finetuning_epochs
+                + ckpt["epoch"],
                 log_every_n_steps=1,
                 accelerator=self.model_params.training_params.accelerator,
                 enable_progress_bar=self.model_params.training_params.show_progress_bar,
                 logger=wandb_logger,
             )
-            trainer.fit(self.model, train_loader, val_dataloaders=val_loader, ckpt_path=self.training_checkpoint_callback.best_model_path)
+            trainer.fit(
+                self.model,
+                train_loader,
+                val_dataloaders=val_loader,
+                ckpt_path=self.training_checkpoint_callback.best_model_path,
+            )
         else:
             print("Starting training...")
             trainer = pl.Trainer(
-                callbacks=[self.training_checkpoint_callback, self.early_stopping_callback],
+                callbacks=[
+                    self.training_checkpoint_callback,
+                    self.early_stopping_callback,
+                ],
                 max_epochs=self.model_params.training_params.epochs,
                 log_every_n_steps=1,
                 accelerator=self.model_params.training_params.accelerator,
                 enable_progress_bar=self.model_params.training_params.show_progress_bar,
-                logger=wandb_logger
+                logger=wandb_logger,
             )
             trainer.fit(self.model, train_loader, val_dataloaders=val_loader)
         if wandb_logger:
@@ -246,24 +275,44 @@ class PytorchLightningWandbModel(model.Model):
         self.set_seed(self.model_params.seed)
         self.model.eval()
         if self.model_params.finetuning:
-            print(f"Loading fine-tuned model from {self.finetuning_checkpoint_callback.best_model_path}...")
-            best_model = self.model.load_from_checkpoint(self.finetuning_checkpoint_callback.best_model_path, time_series_params=self.time_series_params, model_params=self.model_params)
-            empty_checkpoint_directories([self.finetuning_checkpoint_directory, self.training_checkpoint_directory])
-        else: 
-            print(f"Loading trained model from {self.training_checkpoint_callback.best_model_path}...")
-            best_model = self.model.load_from_checkpoint(self.training_checkpoint_callback.best_model_path, time_series_params=self.time_series_params, model_params=self.model_params)
+            print(
+                f"Loading fine-tuned model from {self.finetuning_checkpoint_callback.best_model_path}..."
+            )
+            best_model = self.model.load_from_checkpoint(
+                self.finetuning_checkpoint_callback.best_model_path,
+                time_series_params=self.time_series_params,
+                model_params=self.model_params,
+            )
+            empty_checkpoint_directories(
+                [
+                    self.finetuning_checkpoint_directory,
+                    self.training_checkpoint_directory,
+                ]
+            )
+        else:
+            print(
+                f"Loading trained model from {self.training_checkpoint_callback.best_model_path}..."
+            )
+            best_model = self.model.load_from_checkpoint(
+                self.training_checkpoint_callback.best_model_path,
+                time_series_params=self.time_series_params,
+                model_params=self.model_params,
+            )
             empty_checkpoint_directories([self.training_checkpoint_directory])
         if self.model_params.normalize:
             data = self.normalizer.normalize_test_data(data)
         data_to_torch = torch.from_numpy(data).to(  # pylint: disable=no-member
             torch.float32  # pylint: disable=no-member
         )
+        if next(best_model.parameters()).is_cuda:
+            data_to_torch = data_to_torch.to("cuda")
         prediction = best_model(data_to_torch).cpu().detach().numpy()
         if self.model_params.normalize:
             prediction = self.normalizer.denormalize_prediction_data(prediction)
         training_time = time.time() - self.start_time
         print(f"Prediction finished. Required run time: {training_time:.2f} seconds.\n")
         return prediction
+
 
 def check_finetuning_params(
     model_params: PytorchLightningWandbModelConfig,
@@ -283,7 +332,8 @@ def check_finetuning_params(
         raise ValueError(
             "The model is set to finetuning but the finetuning learning rate or the finetuning epochs are not set."  # pylint: disable=line-too-long
         )
-    
+
+
 def empty_checkpoint_directories(list: list) -> None:
     """Empties the checkpoint directories."""
     for item in list:

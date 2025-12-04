@@ -4,8 +4,8 @@ import os
 import pandas as pd
 import tqdm
 
-INPUT_DATAFOLDER = "src/data/covid/synthetic_fitted"
-OUTPUT_DATAFOLDER = "src/data/covid/synthetic_fitted_transformed"
+INPUT_DATAFOLDER = "src/data/covid/synthetic"
+OUTPUT_DATAFOLDER = "src/data/covid/synthetic_transformed"
 
 if not os.path.exists(INPUT_DATAFOLDER):
     raise ValueError("Input data folder does not exist.")

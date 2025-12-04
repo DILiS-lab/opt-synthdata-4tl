@@ -35,10 +35,10 @@ for seed in [10, 17, 42, 93, 97]:
                     "epochs": 20,
                     "learning_rate": 0.001,
                     "batch_size": 64,
-                    "accelerator": "cpu",
+                    "accelerator": "gpu",
                     "show_progress_bar": True,
                     "patience": 5,
-                }
+                },
             },
             {
                 "id": "PytorchLightningGRUNeuralNetwork",
@@ -47,10 +47,10 @@ for seed in [10, 17, 42, 93, 97]:
                     "epochs": 20,
                     "learning_rate": 0.001,
                     "batch_size": 64,
-                    "accelerator": "cpu",
+                    "accelerator": "gpu",
                     "show_progress_bar": True,
                     "patience": 5,
-                }
+                },
             },
             {
                 "id": "PytorchLightningConvolutionalNeuralNetwork",
@@ -59,10 +59,10 @@ for seed in [10, 17, 42, 93, 97]:
                     "epochs": 20,
                     "learning_rate": 0.001,
                     "batch_size": 64,
-                    "accelerator": "cpu",
+                    "accelerator": "gpu",
                     "show_progress_bar": True,
                     "patience": 5,
-                }
+                },
             },
             {
                 "id": "PytorchLightningCustomDenseNeuralNetwork",
@@ -71,23 +71,26 @@ for seed in [10, 17, 42, 93, 97]:
                     "epochs": 20,
                     "learning_rate": 0.001,
                     "batch_size": 64,
-                    "accelerator": "cpu",
+                    "accelerator": "gpu",
                     "show_progress_bar": True,
                     "patience": 5,
-                }
-            }
+                },
+            },
         ],
         "data": {
-                "synthetic": "/src/data/covid/real-world/covid",
-                "test_split": 0.26,
-                "split_axis": "vertical",
-                "time_series": {
-                    "input_features": ["Infected"],
-                    "output_features": ["Infected"],
-                    "input_length": 7,
-                    "output_length": 7
-                }
-        }, 
+            "synthetic": "/src/data/covid/real-world/covid",
+            "test_split": 0.26,
+            "split_axis": "vertical",
+            "export_path": os.path.join(
+                f"./results/covid/DL/{seed}"
+            ),
+            "time_series": {
+                "input_features": ["Infected"],
+                "output_features": ["Infected"],
+                "input_length": 7,
+                "output_length": 7,
+            },
+        },
     }
     # Write the TOML data to a file with the same name as the observed data file
     toml_filename = "S" + str(seed)

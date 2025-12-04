@@ -2,9 +2,7 @@ import toml
 import os
 
 # Define the path to the output directory
-experiment_directory = (
-    "/src/experiments/julian/algae-rotifers/run-1/runs_baseline"
-)
+experiment_directory = "/src/experiments/julian/algae-rotifers/run-1/runs_baseline"
 
 # Loop through all files in the observed folder
 for seed in [10, 17, 42, 93, 97]:
@@ -83,6 +81,9 @@ for seed in [10, 17, 42, 93, 97]:
             "synthetic": "/src/data/algae-rotifers/real-world/algae-rotifers-coherent",
             "test_split": 0.79,
             "split_axis": "vertical",
+            "export_path": os.path.join(
+                f"./results/algae-rotifers-coherent/DL/{seed}"
+            ),
             "time_series": {
                 "input_features": ["algae", "rotifers"],
                 "output_features": ["rotifers"],

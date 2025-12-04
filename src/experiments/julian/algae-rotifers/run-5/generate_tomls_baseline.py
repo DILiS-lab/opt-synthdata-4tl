@@ -83,6 +83,9 @@ for seed in [10, 17, 42, 93, 97]:
             "synthetic": "/src/data/algae-rotifers/real-world/algae-rotifers-incoherent",
             "test_split": 0.76,
             "split_axis": "vertical",
+            "export_path": os.path.join(
+                f"./results/algae-rotifers-incoherent/DL/{seed}"
+            ),
             "time_series": {
                 "input_features": ["algae", "rotifers"],
                 "output_features": ["rotifers"],
