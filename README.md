@@ -1,6 +1,6 @@
 # Optimizing ODE-derived Synthetic Data for Transfer Learning in Dynamical Biological Systems
 
-This code repository provides the necessary tools to reproduce the findings from Zabbarov & Witzke et al., 2024, on optimizing synthetic dataset characteristics for a simulation-based transfer learning approach to predicting dynamical biological systems.
+This code repository provides the necessary tools to reproduce the findings from Witzke & Zabbarov et al., 2024, on optimizing synthetic dataset characteristics for a simulation-based transfer learning approach to predicting dynamical biological systems.
 
 ![Overview of Experimental Setup](figures/visual_abstract.png "Image from Zabbarov&Witzke et al., 2024")
 
@@ -90,7 +90,7 @@ You find the prediction results for the deep learning and transfer learning expe
 # Citation
 If you use our pipeline from this repository and its code, please cite our preprint Zabbarov & Witzke et al., 2024:
 
-Julian Zabbarov, Simon Witzke, Maximilian Kleissl, Pascal Iversen, Bernhard Y. Renard, Katharina Baum
-Optimizing ODE-derived Synthetic Data for Transfer Learning in Dynamical Biological Systems
-bioRxiv 2024.03.25.586390; doi: https://doi.org/10.1101/2024.03.25.586390 
+Simon Witzke, Julian Zabbarov, Maximilian Kleissl, Pascal Iversen, Bernhard Y. Renard, Katharina Baum
+Selecting Synthetic Data for Successful Simulation-Based Transfer Learning in Dynamical Biological Systems
+bioRxiv 2024.03.25.586390; doi: [https://doi.org/10.1101/2024.03.25.586390 ](https://doi.org/10.1101/2024.03.25.586390)
 
