@@ -1,8 +1,8 @@
-# Optimizing ODE-derived Synthetic Data for Transfer Learning in Dynamical Biological Systems
+# Selecting synthetic data for successful simulation-based transfer learning in dynamical biological systems
 
-This code repository provides the necessary tools to reproduce the findings from Witzke & Zabbarov et al., 2024, on optimizing synthetic dataset characteristics for a simulation-based transfer learning approach to predicting dynamical biological systems.
+This code repository provides the necessary tools to reproduce the findings from [Witzke & Zabbarov et al., 2026](https://doi.org/10.1186/s12859-026-06469-1), on optimizing synthetic dataset characteristics for a simulation-based transfer learning approach to predicting dynamical biological systems.
 
-![Overview of Experimental Setup](figures/visual_abstract.png "Image from Zabbarov&Witzke et al., 2024")
+![Overview of Experimental Setup](figures/visual_abstract.png "Figure 1 from Witzke&Zabbarov et al., 2026")
 
 ## Installation
 
@@ -88,9 +88,8 @@ sh src/experiments/julian/covid/run-1/run_multivariate.sh
 You find the prediction results for the deep learning and transfer learning experiments in the `/runs_baseline` and `run_transfer_learning` folder, respectively. Note that you might have to adjust PyTorch Lightning's internal `num_worker` depending on the architecture on which the experiments are executed to speed up the training process.
 
 # Citation
-If you use our pipeline from this repository and its code, please cite our preprint Zabbarov & Witzke et al., 2024:
+If you use our pipeline from this repository and its code, please cite our paper Witzke & Zabbarov et al., 2026:
 
-Simon Witzke, Julian Zabbarov, Maximilian Kleissl, Pascal Iversen, Bernhard Y. Renard, Katharina Baum
-Selecting Synthetic Data for Successful Simulation-Based Transfer Learning in Dynamical Biological Systems
-bioRxiv 2024.03.25.586390; doi: [https://doi.org/10.1101/2024.03.25.586390 ](https://doi.org/10.1101/2024.03.25.586390)
+Witzke, S., Zabbarov, J., Kleissl, M. et al. Selecting synthetic data for successful simulation-based transfer learning in dynamical biological systems. BMC Bioinformatics 27, 110 (2026). [https://doi.org/10.1186/s12859-026-06469-1](https://doi.org/10.1186/s12859-026-06469-1)
+
 
